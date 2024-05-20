@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <!--配置Spring和Mybatis-->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:Spring-Config.xml</param-value>
+    </context-param>
+
+    <!--
+    配置web启动监听器
+    作用：将Spring容器交给web容器；在web容器启动时，自动装配Spring-Config.xml的配置信息
+    ServletContext被Servlet程序用来与web容器通信，ServletContextListener是ServletContext
+    的监听者，当Spring容器(ServletContext)创建Bean，web容器也获取该Bean
+    -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!--配置前端控制器DispatcherServlet-->
+    <servlet>
+        <servlet-name>dis</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <!--初始化SpringMVC配置文件-->
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:SpringMVC-Config.xml</param-value>
+        </init-param>
+        <!--Servlet加载时机：1：程序启动时加载-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dis</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+    <!--配置启动项，服务器启动到login.jsp页面-->
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!--配置过滤器：可以设置添加到数据库的中文字符编码，防止出现中文乱码-->
+    <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!--过滤器初始化参数-->
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+        <!--启动过滤器-->
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <!--过滤范围-->
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+</web-app>

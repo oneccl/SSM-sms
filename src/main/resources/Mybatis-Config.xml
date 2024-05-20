@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--默认日志-->
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--
+        自动映射表的字段与类的属性；value有以下值：
+        NONE：表示取消自动映射
+        PARTIAL：只会自动映射没有定义嵌套结果集映射的结果集(默认)
+        FULL：会自动映射任意复杂的结果(包括嵌套和其他情况)
+        -->
+        <setting name="autoMappingBehavior" value="FULL"/>
+    </settings>
+
+    <!--以包为基准的别名，只写类名-->
+    <typeAliases>
+        <package name="com.cc.pojo"/>
+    </typeAliases>
+
+    <!--环境：数据源-->
+<!--    <environments default="mysql">-->
+<!--        &lt;!&ndash;id值必须和上面default一致&ndash;&gt;-->
+<!--        <environment id="mysql">-->
+<!--            <transactionManager type="JDBC"/>-->
+<!--            <dataSource type="POOLED">-->
+<!--                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>-->
+<!--                <property name="url" value="jdbc:mysql:///day1122_ssm_sms"/>-->
+<!--                <property name="username" value="root"/>-->
+<!--                <property name="password" value="123456"/>-->
+<!--            </dataSource>-->
+<!--        </environment>-->
+<!--    </environments>-->
+
+    <!--映射配置文件：每个独立的dao接口对应的映射配置文件-->
+<!--    <mappers>-->
+<!--        <mapper resource="daoMapper/UserDaoMapper.xml"/>-->
+<!--    </mappers>-->
+
+    <!--配置Mybatis的分页插件-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+    </plugins>
+
+</configuration>

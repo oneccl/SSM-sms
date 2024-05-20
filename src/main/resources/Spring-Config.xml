@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--注解扫描-->
+    <context:component-scan base-package="com.cc"/>
+
+    <!--配置Spring的数据源-->
+    <!--可用来代替Mybatis-Config.xml中的数据源-->
+    <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql:///day1122_ssm_sms"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+        <!--连接池初始大小-->
+        <property name="initialSize" value="8"/>
+    </bean>
+
+    <!--配置Mybatis的SqlSession工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--使用Spring的数据源-->
+        <property name="dataSource" ref="druidDataSource"/>
+
+        <!--以包为基准的别名，只写类名-->
+        <!--用来代替Mybatis-Config.xml中的typeAliases标签-->
+<!--        <property name="typeAliasesPackage" value="com.cc.pojo"/>-->
+
+        <!--加载本地Mybatis配置文件-->
+        <property name="configLocation" value="classpath:Mybatis-Config.xml"/>
+
+        <!--扫描每个Dao接口的映射配置文件-->
+        <!--用来代替Mybatis-Config.xml中的映射配置文件，两者只能写其一-->
+        <property name="mapperLocations">
+            <list>
+                <value>classpath:daoMapper/*.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--配置扫描映射配置文件对应的Dao接口，实现动态Dao接口注入到Spring容器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--需要扫描的Dao接口所在的包-->
+        <property name="basePackage" value="com.cc.dao"/>
+    </bean>
+
+</beans>
